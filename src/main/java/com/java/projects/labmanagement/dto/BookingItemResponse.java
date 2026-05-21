@@ -16,6 +16,8 @@ public record BookingItemResponse(
         Long id,
         Long bookingId,
         Long labTestId,
+        String testName,
+        String description,
         BookingItemStatus status,
         BigDecimal price,
 

@@ -36,7 +36,7 @@ public class UserController {
     // Get All Users using Pageable
     @GetMapping
     public ResponseEntity<Page<UserResponse>> getUsers(@RequestParam(defaultValue = "0")
-                                                       @Min(value = 1, message = "Page number cannot be negative")
+                                                       @Min(value = 0, message = "Page number cannot be negative")
                                                        int page,
 
                                                        @RequestParam(defaultValue = "5")

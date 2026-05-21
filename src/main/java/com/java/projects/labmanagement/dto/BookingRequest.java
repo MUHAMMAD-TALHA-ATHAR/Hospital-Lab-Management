@@ -1,6 +1,8 @@
 package com.java.projects.labmanagement.dto;
 
+import com.java.projects.labmanagement.entity.BookingStatus;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -22,4 +24,6 @@ public class BookingRequest {
     @NotNull(message = "Booking date is required")
     @FutureOrPresent(message = "Booking date cannot be in the past")
     private LocalDateTime bookingDate;
+
+
 }

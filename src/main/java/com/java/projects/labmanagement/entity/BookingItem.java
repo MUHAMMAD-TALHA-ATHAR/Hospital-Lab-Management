@@ -30,7 +30,7 @@ public class BookingItem {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private BookingItemStatus status;
+    private BookingItemStatus status = BookingItemStatus.REQUESTED;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;

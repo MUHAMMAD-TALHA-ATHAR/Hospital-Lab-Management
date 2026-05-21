@@ -5,6 +5,7 @@ import com.java.projects.labmanagement.entity.BookingStatus;
 import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,7 +20,10 @@ public record BookingResponse(
 
         @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         LocalDateTime bookingDate,
+
         BookingStatus status,
+
+        BigDecimal totalAmount,
 
         @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         LocalDateTime createdAt

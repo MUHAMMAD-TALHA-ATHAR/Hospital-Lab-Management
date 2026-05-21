@@ -7,7 +7,6 @@ import com.java.projects.labmanagement.entity.User;
 import com.java.projects.labmanagement.exception.ResourceNotFoundException;
 import com.java.projects.labmanagement.mapper.UserMapper;
 import com.java.projects.labmanagement.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
