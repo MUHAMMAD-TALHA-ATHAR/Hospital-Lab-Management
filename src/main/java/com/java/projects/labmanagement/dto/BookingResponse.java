@@ -1,0 +1,27 @@
+package com.java.projects.labmanagement.dto;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.java.projects.labmanagement.entity.BookingStatus;
+import lombok.Builder;
+import lombok.extern.jackson.Jacksonized;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Builder
+@Jacksonized
+public record BookingResponse(
+        Long id,
+        String bookingCode,
+        Long userId,
+        String userName,
+        List<BookingItemResponse> bookingItems,
+
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+        LocalDateTime bookingDate,
+        BookingStatus status,
+
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+        LocalDateTime createdAt
+) {
+}
