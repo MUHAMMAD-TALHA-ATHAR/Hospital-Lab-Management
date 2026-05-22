@@ -3,6 +3,7 @@ package com.java.projects.labmanagement.dto;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +21,7 @@ public class ReportRequest {
     private LocalDateTime reportDate;
 
     @NotBlank(message = "Result summary is required")
+    @Size(max = 2000, message = "Report summary does not exceed {max} characters")
     private String resultSummary;
 
     @NotBlank(message = "File path is required")

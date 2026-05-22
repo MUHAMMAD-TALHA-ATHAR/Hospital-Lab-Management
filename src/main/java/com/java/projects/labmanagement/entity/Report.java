@@ -18,14 +18,14 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booking_item_id", nullable = false, unique = true)
     private BookingItem bookingItem;
 
     @Column(nullable = false)
     private LocalDateTime reportDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2000)
     private String resultSummary;
 
     @Column(nullable = false)

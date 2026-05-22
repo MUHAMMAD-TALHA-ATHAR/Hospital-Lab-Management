@@ -12,6 +12,13 @@ public record ReportResponse(
 
         Long id,
         Long bookingItemId,
+        Long bookingId,
+        String bookingCode,
+        String patientName,
+        Long labTestId,
+        String testName,
+
+        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
         LocalDateTime reportDate,
         String resultSummary,
         String filePath,

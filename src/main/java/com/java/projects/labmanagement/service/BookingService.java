@@ -1,15 +1,13 @@
 package com.java.projects.labmanagement.service;
 
+import com.java.projects.labmanagement.dto.BookingItemResponse;
 import com.java.projects.labmanagement.dto.BookingRequest;
 import com.java.projects.labmanagement.dto.BookingResponse;
-import com.java.projects.labmanagement.entity.Booking;
-import com.java.projects.labmanagement.entity.BookingItem;
-import com.java.projects.labmanagement.entity.BookingStatus;
-import com.java.projects.labmanagement.entity.LabTest;
-import com.java.projects.labmanagement.entity.User;
+import com.java.projects.labmanagement.entity.*;
 import com.java.projects.labmanagement.exception.ResourceNotFoundException;
 import com.java.projects.labmanagement.mapper.BookingItemMapper;
 import com.java.projects.labmanagement.mapper.BookingMapper;
+import com.java.projects.labmanagement.repository.BookingItemRepository;
 import com.java.projects.labmanagement.repository.BookingRepository;
 import com.java.projects.labmanagement.repository.LabTestRepository;
 import com.java.projects.labmanagement.repository.UserRepository;
@@ -26,13 +24,15 @@ import java.util.List;
 public class BookingService {
 
     private final BookingRepository bookingRepository;
+    private final BookingItemRepository bookingItemRepository;
     private final UserRepository userRepository;
     private final LabTestRepository labTestRepository;
     private final BookingMapper bookingMapper;
     private final BookingItemMapper bookingItemMapper;
 
-    public BookingService(BookingRepository bookingRepository, UserRepository userRepository, LabTestRepository labTestRepository, BookingMapper bookingMapper, BookingItemMapper bookingItemMapper) {
+    public BookingService(BookingRepository bookingRepository, BookingItemRepository bookingItemRepository, UserRepository userRepository, LabTestRepository labTestRepository, BookingMapper bookingMapper, BookingItemMapper bookingItemMapper) {
         this.bookingRepository = bookingRepository;
+        this.bookingItemRepository = bookingItemRepository;
         this.userRepository = userRepository;
         this.labTestRepository = labTestRepository;
         this.bookingMapper = bookingMapper;
@@ -97,14 +97,26 @@ public class BookingService {
 
     // Update Booking Status
     @Transactional
-    public BookingResponse updateBookingStatus(Long id, BookingStatus status){
+    public BookingResponse updateBookingStatus(Long bookingId, BookingStatus status){
 
-        Booking booking = bookingRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id " + id));
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id " + bookingId));
 
         booking.setStatus(status);
 
         return bookingMapper.toResponse(bookingRepository.save(booking));
+    }
+
+    // Update Booking Item Status
+    @Transactional
+    public BookingItemResponse updateBookingItemStatus(Long bookingItemId, BookingItemStatus status){
+
+        BookingItem bookingItem = bookingItemRepository.findById(bookingItemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking item not found with id " + bookingItemId));
+
+        bookingItem.setStatus(status);
+
+        return bookingItemMapper.toResponse(bookingItemRepository.save(bookingItem));
     }
 
     // Cancel Booking

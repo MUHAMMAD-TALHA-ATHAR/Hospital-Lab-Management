@@ -36,13 +36,13 @@ public class UserController {
     // Get All Users using Pageable
     @GetMapping
     public ResponseEntity<Page<UserResponse>> getUsers(@RequestParam(defaultValue = "0")
-                                                       @Min(value = 0, message = "Page number cannot be negative")
-                                                       int page,
+                                                           @Min(value=0, message = "Page number cannot be negative")
+                                                           int page,
 
                                                        @RequestParam(defaultValue = "5")
-                                                       @Min(value = 1, message = "Size must be at least {min}")
-                                                       @Max(value = 50, message = "Size cannot exceed {max}")
-                                                       int size){
+                                                           @Min(value = 1, message = "Size must be at least {min}")
+                                                           @Max(value = 50, message = "Size cannot exceed {max}")
+                                                           int size){
 
         return ResponseEntity.ok(userService.getUsers(page, size));
     }

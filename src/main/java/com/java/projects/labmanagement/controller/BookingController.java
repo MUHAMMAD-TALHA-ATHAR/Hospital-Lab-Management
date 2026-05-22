@@ -1,7 +1,9 @@
 package com.java.projects.labmanagement.controller;
 
+import com.java.projects.labmanagement.dto.BookingItemResponse;
 import com.java.projects.labmanagement.dto.BookingRequest;
 import com.java.projects.labmanagement.dto.BookingResponse;
+import com.java.projects.labmanagement.entity.BookingItemStatus;
 import com.java.projects.labmanagement.entity.BookingStatus;
 import com.java.projects.labmanagement.service.BookingService;
 import jakarta.validation.Valid;
@@ -67,6 +69,14 @@ public class BookingController {
                                                                @RequestParam BookingStatus status){
 
         return ResponseEntity.ok(bookingService.updateBookingStatus(bookingId, status));
+    }
+
+    // Update Booking Item status
+    @PutMapping("/{bookingItemId}/status")
+    public ResponseEntity<BookingItemResponse> updateBookingItemStatus(@PathVariable Long bookingItemId,
+                                                                       @RequestParam BookingItemStatus status){
+
+        return ResponseEntity.ok(bookingService.updateBookingItemStatus(bookingItemId,status));
     }
 
     // Cancel Booking
