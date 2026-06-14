@@ -24,6 +24,5 @@ public class ReportRequest {
     @Size(max = 2000, message = "Report summary does not exceed {max} characters")
     private String resultSummary;
 
-    @NotBlank(message = "File path is required")
-    private String filePath;
+
 }

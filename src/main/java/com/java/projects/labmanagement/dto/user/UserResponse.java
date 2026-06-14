@@ -1,4 +1,4 @@
-package com.java.projects.labmanagement.dto;
+package com.java.projects.labmanagement.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.java.projects.labmanagement.entity.Role;
@@ -16,7 +16,7 @@ public record UserResponse(
         String phone,
         Role role,
 
-        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+        @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
         LocalDateTime createdAt
 ) {
 }

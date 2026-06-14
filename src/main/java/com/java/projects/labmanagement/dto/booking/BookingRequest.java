@@ -1,8 +1,6 @@
 package com.java.projects.labmanagement.dto;
 
-import com.java.projects.labmanagement.entity.BookingStatus;
 import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

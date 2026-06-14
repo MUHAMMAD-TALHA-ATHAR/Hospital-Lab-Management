@@ -18,12 +18,12 @@ public record ReportResponse(
         Long labTestId,
         String testName,
 
-        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+        @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
         LocalDateTime reportDate,
         String resultSummary,
         String filePath,
 
-        @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss")
+        @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
         LocalDateTime createdAt
 ) {
 }

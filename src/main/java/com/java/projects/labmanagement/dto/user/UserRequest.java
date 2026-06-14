@@ -1,10 +1,7 @@
 package com.java.projects.labmanagement.dto;
 
 import com.java.projects.labmanagement.entity.Role;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,8 +24,7 @@ public class UserRequest {
 
     @NotBlank(message = "Phone number is required")
     @Size(max = 11, message = "Phone number cannot exceed {max} characters")
+    @Pattern(regexp = "^[0-9]{11}$", message = "Phone number must contain exactly 11 digits")
     private String phone;
 
-    @NotNull(message = "Role is required")
-    private Role role;
 }
