@@ -1,8 +1,9 @@
 package com.java.projects.labmanagement.service;
 
-import com.java.projects.labmanagement.dto.LabTestRequest;
-import com.java.projects.labmanagement.dto.LabTestResponse;
+import com.java.projects.labmanagement.dto.labTest.LabTestRequest;
+import com.java.projects.labmanagement.dto.labTest.LabTestResponse;
 import com.java.projects.labmanagement.entity.LabTest;
+import com.java.projects.labmanagement.exception.BadRequestException;
 import com.java.projects.labmanagement.exception.ResourceNotFoundException;
 import com.java.projects.labmanagement.mapper.LabTestMapper;
 import com.java.projects.labmanagement.repository.LabTestRepository;
@@ -29,9 +30,9 @@ public class LabTestService {
     // Create Lab Test
     @Transactional
     public LabTestResponse createTest(LabTestRequest request){
+
         if (labTestRepository.existsByTestNameIgnoreCase(request.getTestName())){
-            throw new IllegalArgumentException("Lab test with name " + request.getTestName() + " already exists");
-        }
+            throw new BadRequestException("Lab test with name " + request.getTestName() + " already exists");        }
 
         LabTest labTest = labTestMapper.toEntity(request);
 
@@ -66,7 +67,15 @@ public class LabTestService {
                 .stream()
                 .map(labTestMapper::toResponse)
                 .toList();
+    }
 
+    @Transactional(readOnly = true)
+    public List<LabTestResponse> searchLabTest(String testName){
+
+        return labTestRepository.findByTestNameContainingIgnoreCase(testName)
+                .stream()
+                .map(labTestMapper::toResponse)
+                .toList();
     }
 
     // Update Test
@@ -77,7 +86,7 @@ public class LabTestService {
 
         if (!labTest.getTestName().equalsIgnoreCase(request.getTestName()) &&
         labTestRepository.existsByTestNameIgnoreCase(request.getTestName())){
-            throw new IllegalArgumentException("Test name already in use");
+            throw new BadRequestException("Test name already in use");
         }
 
         labTest.setTestName(request.getTestName());
@@ -96,6 +105,7 @@ public class LabTestService {
                 .orElseThrow(() -> new ResourceNotFoundException("Lab test not found with id " + id));
 
 
-        labTestRepository.delete(labTest);
+        labTest.setActive(false);
+        labTestRepository.save(labTest);
     }
 }

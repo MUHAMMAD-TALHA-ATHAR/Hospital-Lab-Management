@@ -1,11 +1,12 @@
 package com.java.projects.labmanagement.mapper;
 
-import com.java.projects.labmanagement.dto.BookingItemResponse;
-import com.java.projects.labmanagement.dto.BookingRequest;
-import com.java.projects.labmanagement.dto.BookingResponse;
+import com.java.projects.labmanagement.dto.booking.BookingItemResponse;
+import com.java.projects.labmanagement.dto.booking.BookingRequest;
+import com.java.projects.labmanagement.dto.booking.BookingResponse;
 import com.java.projects.labmanagement.entity.Booking;
-import com.java.projects.labmanagement.entity.BookingStatus;
 import com.java.projects.labmanagement.entity.User;
+import com.java.projects.labmanagement.enums.BookingStatus;
+
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

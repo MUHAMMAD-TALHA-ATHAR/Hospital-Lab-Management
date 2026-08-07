@@ -1,7 +1,7 @@
 package com.java.projects.labmanagement.mapper;
 
-import com.java.projects.labmanagement.dto.LabTestRequest;
-import com.java.projects.labmanagement.dto.LabTestResponse;
+import com.java.projects.labmanagement.dto.labTest.LabTestRequest;
+import com.java.projects.labmanagement.dto.labTest.LabTestResponse;
 import com.java.projects.labmanagement.entity.LabTest;
 import org.springframework.stereotype.Component;
 

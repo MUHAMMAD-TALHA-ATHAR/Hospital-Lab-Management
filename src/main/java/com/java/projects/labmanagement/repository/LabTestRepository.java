@@ -12,4 +12,6 @@ public interface LabTestRepository extends JpaRepository<LabTest, Long> {
     boolean existsByTestNameIgnoreCase(String testName);
 
     List<LabTest> findByActiveTrue();
+
+    List<LabTest> findByTestNameContainingIgnoreCase(String testName);
 }

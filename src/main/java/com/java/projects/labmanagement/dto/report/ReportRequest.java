@@ -1,4 +1,4 @@
-package com.java.projects.labmanagement.dto;
+package com.java.projects.labmanagement.dto.report;
 
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;

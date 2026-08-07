@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+import com.java.projects.labmanagement.enums.Role;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -32,13 +34,22 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private Role role = Role.USER;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
     @PrePersist
-    protected void onCreate(){
+    public void onCreate() {
         createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 }

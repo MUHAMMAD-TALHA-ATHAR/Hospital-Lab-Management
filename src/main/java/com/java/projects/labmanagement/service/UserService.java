@@ -1,9 +1,10 @@
 package com.java.projects.labmanagement.service;
 
-import com.java.projects.labmanagement.dto.UserRequest;
-import com.java.projects.labmanagement.dto.UserResponse;
-import com.java.projects.labmanagement.entity.Role;
+import com.java.projects.labmanagement.dto.user.UserRequest;
+import com.java.projects.labmanagement.dto.user.UserResponse;
 import com.java.projects.labmanagement.entity.User;
+import com.java.projects.labmanagement.enums.Role;
+import com.java.projects.labmanagement.exception.BadRequestException;
 import com.java.projects.labmanagement.exception.ResourceNotFoundException;
 import com.java.projects.labmanagement.mapper.UserMapper;
 import com.java.projects.labmanagement.repository.UserRepository;
@@ -11,37 +12,62 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, UserMapper userMapper) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    // Create User
+    // Get current logged-in user profile
+    @Transactional(readOnly = true)
+    public UserResponse getCurrentUser() {
+
+        String email = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication(), "No authenticated user found").getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        return userMapper.toResponse(user);
+    }
+
     @Transactional
-    public UserResponse createUser(UserRequest request){
-        if (userRepository.existsByEmail(request.getEmail())){
-            throw new IllegalArgumentException("User with email " + request.getEmail() + " already exists");
+    public UserResponse updateCurrentUser(UserRequest request) {
+
+        String email = Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication(), "No authenticated user found").getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        if (!user.getEmail().equals(request.getEmail())
+                && userRepository.existsByEmailAndIdNot(request.getEmail(), user.getId())) {
+            throw new BadRequestException("Email already in use");
         }
 
-        User user = userMapper.toEntity(request);
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPhone(request.getPhone());
 
         return userMapper.toResponse(userRepository.save(user));
     }
 
-    // Get All Users using Pageable
     @Transactional(readOnly = true)
-    public Page<UserResponse> getUsers(int page, int size){
+    public Page<UserResponse> getUsers(int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
@@ -49,9 +75,8 @@ public class UserService {
                 .map(userMapper::toResponse);
     }
 
-    // Get All Users
     @Transactional(readOnly = true)
-    public List<UserResponse> getAllUsers(){
+    public List<UserResponse> getAllUsers() {
 
         return userRepository.findAll()
                 .stream()
@@ -59,9 +84,8 @@ public class UserService {
                 .toList();
     }
 
-    // Get User by id
     @Transactional(readOnly = true)
-    public UserResponse getUserById(Long id){
+    public UserResponse getUserById(Long id) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
@@ -69,9 +93,8 @@ public class UserService {
         return userMapper.toResponse(user);
     }
 
-    // Get User by Role
     @Transactional(readOnly = true)
-    public List<UserResponse> getUsersByRole(Role role){
+    public List<UserResponse> getUsersByRole(Role role) {
 
         return userRepository.findByRole(role)
                 .stream()
@@ -79,30 +102,28 @@ public class UserService {
                 .toList();
     }
 
-    // Update User
     @Transactional
-    public UserResponse updateUser(Long id, UserRequest request){
+    public UserResponse updateUser(Long id, UserRequest request) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
 
-        if(!user.getEmail().equals(request.getEmail()) &&
-                userRepository.existsByEmailAndIdNot(request.getEmail(), id)){
-            throw new IllegalArgumentException("Email already in use");
+        if (!user.getEmail().equals(request.getEmail())
+                && userRepository.existsByEmailAndIdNot(request.getEmail(), id)) {
+            throw new BadRequestException("Email already in use");
         }
-        
+
         user.setName(request.getName());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setPhone(request.getPhone());
-        user.setRole(request.getRole());
 
         return userMapper.toResponse(userRepository.save(user));
     }
 
-    // Delete User
     @Transactional
-    public void deleteUser(Long id){
+    public void deleteUser(Long id) {
+
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
 

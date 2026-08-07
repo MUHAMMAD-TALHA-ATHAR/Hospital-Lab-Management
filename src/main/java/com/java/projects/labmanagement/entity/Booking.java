@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.java.projects.labmanagement.enums.BookingStatus;
+
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -45,13 +48,25 @@ public class Booking {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         createdAt = LocalDateTime.now();
-        bookingCode = "BOOK-" + UUID.randomUUID()
-                                .toString()
-                                .replace("-", "")
-                                .substring(0, 8)
-                                .toUpperCase();
+        updatedAt = LocalDateTime.now();
+
+        if (bookingCode == null || bookingCode.isBlank()) {
+            bookingCode = "BOOK-" + UUID.randomUUID()
+                    .toString()
+                    .replace("-", "")
+                    .substring(0, 8)
+                    .toUpperCase();
+        }
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 }

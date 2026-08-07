@@ -1,4 +1,4 @@
-package com.java.projects.labmanagement.dto.user;
+package com.java.projects.labmanagement.dto.auth;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.java.projects.labmanagement.enums.Role;
@@ -10,18 +10,16 @@ import java.time.LocalDateTime;
 
 @Builder
 @Jacksonized
-public record UserResponse(
+public record AuthResponse(
         Long id,
         String name,
         String email,
         String phone,
         Role role,
+        String token,
 
         @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-        LocalDateTime createdAt,
+        LocalDateTime createdAt
 
-        @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-        LocalDateTime updatedAt
-
-) {
+        ) {
 }

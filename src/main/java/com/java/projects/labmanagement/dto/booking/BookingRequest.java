@@ -1,4 +1,4 @@
-package com.java.projects.labmanagement.dto;
+package com.java.projects.labmanagement.dto.booking;
 
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotEmpty;
@@ -12,9 +12,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class BookingRequest {
-
-    @NotNull(message = "User id is required")
-    private Long userId;
 
     @NotEmpty(message = "At least one lab test is required")
     private List<@NotNull(message = "Lab test id cannot be null") Long> labTestIds;

@@ -8,6 +8,8 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.java.projects.labmanagement.enums.BookingItemStatus;
+
 
 @Getter
 @Setter
@@ -38,10 +40,17 @@ public class BookingItem {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
     @PrePersist
-    private void onCreate(){
+    public void onCreate() {
         createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 }
-
-

@@ -1,7 +1,7 @@
 package com.java.projects.labmanagement.mapper;
 
-import com.java.projects.labmanagement.dto.ReportRequest;
-import com.java.projects.labmanagement.dto.ReportResponse;
+import com.java.projects.labmanagement.dto.report.ReportRequest;
+import com.java.projects.labmanagement.dto.report.ReportResponse;
 import com.java.projects.labmanagement.entity.BookingItem;
 import com.java.projects.labmanagement.entity.Report;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,6 @@ public class ReportMapper {
         report.setBookingItem(bookingItem);
         report.setReportDate(request.getReportDate());
         report.setResultSummary(request.getResultSummary());
-        report.setFilePath(request.getFilePath());
 
         return report;
 
@@ -34,7 +33,6 @@ public class ReportMapper {
                 .testName(report.getBookingItem().getLabTest().getTestName())
                 .reportDate(report.getReportDate())
                 .resultSummary(report.getResultSummary())
-                .filePath(report.getFilePath())
                 .createdAt(report.getCreatedAt())
                 .build();
 

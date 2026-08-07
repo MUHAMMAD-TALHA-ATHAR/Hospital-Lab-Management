@@ -1,7 +1,8 @@
-package com.java.projects.labmanagement.dto;
+package com.java.projects.labmanagement.dto.booking;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.java.projects.labmanagement.entity.BookingStatus;
+import com.java.projects.labmanagement.enums.BookingStatus;
+
 import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;
 
@@ -26,6 +27,9 @@ public record BookingResponse(
         BigDecimal totalAmount,
 
         @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+
+        @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+        LocalDateTime updatedAt
 ) {
 }

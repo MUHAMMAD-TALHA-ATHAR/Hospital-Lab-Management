@@ -1,4 +1,4 @@
-package com.java.projects.labmanagement.dto.user;
+package com.java.projects.labmanagement.dto.auth;
 
 import jakarta.validation.constraints.*;
 import lombok.Getter;
@@ -6,14 +6,14 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class UserRequest {
+public class RegisterRequest {
 
     @NotBlank(message = "Name is required")
     @Size(min = 3, max = 70, message = "Name must be between {min} to {max} characters")
     private String name;
 
     @NotBlank(message = "Email is required")
-    @Size(max = 70, message = "Email cannot exceed {max} characters")
+    @Size(max = 40, message = "Email cannot exceed {max} characters")
     @Email(message = "Email should be valid")
     private String email;
 

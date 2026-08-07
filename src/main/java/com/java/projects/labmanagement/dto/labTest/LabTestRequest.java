@@ -1,4 +1,4 @@
-package com.java.projects.labmanagement.dto;
+package com.java.projects.labmanagement.dto.labTest;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

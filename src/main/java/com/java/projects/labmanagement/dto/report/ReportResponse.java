@@ -1,4 +1,4 @@
-package com.java.projects.labmanagement.dto;
+package com.java.projects.labmanagement.dto.report;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
@@ -21,9 +21,11 @@ public record ReportResponse(
         @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
         LocalDateTime reportDate,
         String resultSummary,
-        String filePath,
 
         @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+
+        @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+        LocalDateTime updatedAt
 ) {
 }

@@ -1,10 +1,11 @@
 package com.java.projects.labmanagement.service;
 
-import com.java.projects.labmanagement.dto.ReportRequest;
-import com.java.projects.labmanagement.dto.ReportResponse;
+import com.java.projects.labmanagement.dto.report.ReportRequest;
+import com.java.projects.labmanagement.dto.report.ReportResponse;
 import com.java.projects.labmanagement.entity.BookingItem;
-import com.java.projects.labmanagement.entity.BookingItemStatus;
 import com.java.projects.labmanagement.entity.Report;
+import com.java.projects.labmanagement.enums.BookingItemStatus;
+import com.java.projects.labmanagement.exception.BadRequestException;
 import com.java.projects.labmanagement.exception.ResourceNotFoundException;
 import com.java.projects.labmanagement.mapper.ReportMapper;
 import com.java.projects.labmanagement.repository.BookingItemRepository;
@@ -23,11 +24,13 @@ public class ReportService {
 
     private final ReportRepository reportRepository;
     private final BookingItemRepository bookingItemRepository;
+    private final BookingService bookingService;
     private final ReportMapper reportMapper;
 
-    public ReportService(ReportRepository reportRepository, BookingItemRepository bookingItemRepository, ReportMapper reportMapper) {
+    public ReportService(ReportRepository reportRepository, BookingItemRepository bookingItemRepository, BookingService bookingService, ReportMapper reportMapper) {
         this.reportRepository = reportRepository;
         this.bookingItemRepository = bookingItemRepository;
+        this.bookingService = bookingService;
         this.reportMapper = reportMapper;
     }
 
@@ -39,17 +42,12 @@ public class ReportService {
                 .orElseThrow(() -> new ResourceNotFoundException("Booking item not found with id " + request.getBookingItemId()));
 
         if (bookingItem.getStatus() != BookingItemStatus.COMPLETED) {
-            throw new IllegalArgumentException("Report can only be generated when test status is COMPLETED");
-        }
+            throw new BadRequestException("Report can only be generated when test status is COMPLETED");        }
 
         if (reportRepository.existsByBookingItemId(request.getBookingItemId())){
-            throw new IllegalArgumentException("Report already exist for booking item id " + request.getBookingItemId());
-        }
+            throw new BadRequestException("Report already exists for booking item id " + request.getBookingItemId());        }
 
         Report report = reportMapper.toEntity(request, bookingItem);
-
-        bookingItem.setStatus(BookingItemStatus.REPORT_READY);
-        bookingItemRepository.save(bookingItem);
 
         return reportMapper.toResponse(reportRepository.save(report));
     }
@@ -92,6 +90,21 @@ public class ReportService {
         return reports.stream()
                 .map(reportMapper::toResponse)
                 .toList();
+    }
+
+    @Transactional
+    public ReportResponse updateReport(Long id, ReportRequest request) {
+
+        Report report = reportRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Report not found"));
+
+        report.setReportDate(request.getReportDate());
+        report.setResultSummary(request.getResultSummary());
+
+        return reportMapper.toResponse(
+                reportRepository.save(report)
+        );
     }
 
     // Delete Report
